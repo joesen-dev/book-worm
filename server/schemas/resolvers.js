@@ -6,14 +6,10 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        // console.log('user');
-        // console.log(context.user);
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
           .populate('savedBooks');
 
-        // console.log('userData');
-        // console.log(userData);
         return userData;
       }
 
@@ -56,15 +52,12 @@ const resolvers = {
     // save a book to a user's `savedBooks`
     saveBook: async (parent, { input }, context) => {
       if (context.user) {
-        console.log('input: ', input);
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { savedBooks: input } },
           { new: true }
         ).populate('savedBooks');
 
-        console.log('updatedUser');
-        console.log(updatedUser);
         return updatedUser;
       }
 
@@ -73,7 +66,6 @@ const resolvers = {
     // remove a book from `savedBooks`
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        console.log('bookId: ', bookId);
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: { bookId: bookId } } },
@@ -84,8 +76,6 @@ const resolvers = {
           throw new AuthenticationError("Couldn't find user with this id!");
         }
 
-        console.log('updatedUser');
-        console.log(updatedUser);
         return updatedUser;
       }
 

@@ -44,20 +44,6 @@ const SignupForm = () => {
       console.error(e);
       setShowAlert(true);
     }
-    // try {
-    //   const response = await addUser(userFormData);
-
-    //   if (!response.ok) {
-    //     throw new Error('something went wrong!');
-    //   }
-
-    //   const { token, user } = await response.json();
-    //   console.log(user);
-    //   Auth.login(token);
-    // } catch (err) {
-    //   console.error(err);
-    //   setShowAlert(true);
-    // }
 
     setUserFormData({
       username: '',

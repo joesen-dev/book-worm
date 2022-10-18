@@ -50,9 +50,5 @@ const typeDefs = gql`
   }
 `;
 
-// mutation DeleteObject {
-//   deleteUser(className: String!, objectId: ID!): User
-// }
-
 // export the typeDefs
 module.exports = typeDefs;
