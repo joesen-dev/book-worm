@@ -27,6 +27,8 @@ const SavedBooks = () => {
   const userDataLength = Object.keys(userData).length;
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // TODO: (Current behavior)-User must referesh page for delete book to not render
+  // TODO: (Desired behavior)-have page automatically render without having to refresh
   const handleDeleteBook = async bookId => {
     try {
       // Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook()
@@ -73,7 +75,9 @@ const SavedBooks = () => {
                   />
                 ) : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title>
+                    <a href={book.link}>{book.title}</a>
+                  </Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button
