@@ -18,11 +18,12 @@ import { GET_ME } from '../utils/queries';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  // const [userData, setUserData] = useState({});
   const { error, data } = useQuery(GET_ME);
-  const userData = data || {};
+  const userData = data?.me || {};
   console.log('USER');
   console.log(userData);
+  console.log('SAVED BOOKS');
+  console.log(userData.savedBooks);
 
   const userDataLength = Object.keys(userData).length;
   console.log('userDataLength');

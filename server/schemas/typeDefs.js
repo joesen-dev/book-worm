@@ -46,8 +46,13 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(input: SavedBookInput): User!
     removeBook(bookId: String!): User
+    DeleteObject(className: String!, Id: ID!): User
   }
 `;
+
+// mutation DeleteObject {
+//   deleteUser(className: String!, objectId: ID!): User
+// }
 
 // export the typeDefs
 module.exports = typeDefs;
