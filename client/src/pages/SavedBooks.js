@@ -21,8 +21,6 @@ const SavedBooks = () => {
   const { error, data } = useQuery(GET_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
-  // console.log('USER: ', userData);
-  // console.log('SAVED BOOKS: ', userData.savedBooks);
 
   const userDataLength = Object.keys(userData).length;
 
