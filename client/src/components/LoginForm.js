@@ -60,6 +60,8 @@ const LoginForm = () => {
     });
   };
 
+  if (error) return `Something went wrong! ${error.message}`;
+
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>

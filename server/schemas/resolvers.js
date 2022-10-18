@@ -1,27 +1,31 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
+        console.log('user');
+        console.log(context.user);
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
-          .populate('books');
+          .populate('savedBooks');
 
+        console.log('userData');
+        console.log(userData);
         return userData;
       }
 
       throw new AuthenticationError('Not logged in');
     },
     users: async () => {
-      return User.find().select('-__v -password').populate('books');
+      return User.find().select('-__v -password').populate('savedBooks');
     },
     user: async (parent, { username }) => {
       return User.findOne({ username })
         .select('-__v -password')
-        .populate('books');
+        .populate('savedBooks');
     },
   },
 
@@ -50,15 +54,16 @@ const resolvers = {
       return { token, user };
     },
     // save a book to a user's `savedBooks`
-    saveBook: async (parent, { user, book }, context) => {
+    saveBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        console.log(user);
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: book } },
+          { $addToSet: { savedBooks: bookId } },
           { new: true }
         ).populate('savedBooks');
 
+        console.log('updatedUser');
+        console.log(updatedUser);
         return updatedUser;
       }
 
@@ -67,7 +72,8 @@ const resolvers = {
     // remove a book from `savedBooks`
     removeBook: async (parent, { user, params }, context) => {
       if (context.user) {
-        console.log(user);
+        console.log('user');
+        console.log(context.user);
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: { bookId: params.bookId } } },
@@ -78,6 +84,8 @@ const resolvers = {
           throw new AuthenticationError("Couldn't find user with this id!");
         }
 
+        console.log('updatedUser');
+        console.log(updatedUser);
         return updatedUser;
       }
 

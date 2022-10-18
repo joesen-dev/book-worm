@@ -18,7 +18,7 @@ import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
   // Pass SAVE_BOOK mutation to useMutation
-  const [saveBook, { data, loading, error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -80,10 +80,16 @@ const SearchBooks = () => {
 
     try {
       const response = await saveBook(bookToSave, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      // const response = await saveBook(bookToSave, token);
+      console.log('response');
+      console.log(response);
+      // debugger;
+      // if (!data) {
+      //   throw new Error('something went wrong!');
+      // }
+      // if (!response.ok) {
+      //   throw new Error('something went wrong!');
+      // }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -91,10 +97,6 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
-  // Notify user if loading or error when they are trying to saveBook
-  if (loading) return 'Submitting...';
-  if (error) return `Submission error! ${error.message}`;
 
   return (
     <>

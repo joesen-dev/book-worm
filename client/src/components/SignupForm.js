@@ -66,6 +66,8 @@ const SignupForm = () => {
     });
   };
 
+  if (error) return `Something went wrong! ${error.message}`;
+
   return (
     <>
       {/* This is needed for the validation functionality above */}

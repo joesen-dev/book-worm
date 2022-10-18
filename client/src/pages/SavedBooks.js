@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { Navigate, useParams } from 'react-router-dom';
 import {
   Jumbotron,
   Container,
@@ -20,16 +19,14 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   // const [userData, setUserData] = useState({});
-  const { loading, error, data } = useQuery(GET_ME);
-  const userData = data?.me || {};
+  const { error, data } = useQuery(GET_ME);
+  const userData = data || {};
   console.log('USER');
   console.log(userData);
 
-  // use this to determine if `useEffect()` hook needs to run again
-  // const userDataLength = Object.keys(userData).length;
-  // console.log('userDataLength');
-  // console.log(userDataLength);
-  // const userDataLength = Object.keys(userData).length;
+  const userDataLength = Object.keys(userData).length;
+  console.log('userDataLength');
+  console.log(userDataLength);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   // const handleDeleteBook = async bookId => {
@@ -56,7 +53,7 @@ const SavedBooks = () => {
   // };
 
   // if data isn't here yet, say so
-  if (loading) {
+  if (!userDataLength) {
     return <h2>LOADING...</h2>;
   }
   if (error) return `Error! ${error.message}`;
