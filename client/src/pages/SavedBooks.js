@@ -10,48 +10,35 @@ import {
 import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
-// import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import { GET_ME } from '../utils/queries';
-// import { REMOVE_BOOK } from '../utils/mutations';
+import { REMOVE_BOOK } from '../utils/mutations';
 
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { error, data } = useQuery(GET_ME);
+  const [removeBook] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
-  console.log('USER');
-  console.log(userData);
-  console.log('SAVED BOOKS');
-  console.log(userData.savedBooks);
+  // console.log('USER: ', userData);
+  // console.log('SAVED BOOKS: ', userData.savedBooks);
 
   const userDataLength = Object.keys(userData).length;
-  console.log('userDataLength');
-  console.log(userDataLength);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  // const handleDeleteBook = async bookId => {
-  //   const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-  //   if (!token) {
-  //     return false;
-  //   }
-
-  //   try {
-  //     const response = await deleteBook(bookId, token);
-
-  //     if (!response.ok) {
-  //       throw new Error('something went wrong!');
-  //     }
-
-  //     const updatedUser = await response.json();
-  //     setUserData(updatedUser);
-  //     // upon success, remove book's id from localStorage
-  //     removeBookId(bookId);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const handleDeleteBook = async bookId => {
+    try {
+      // Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook()
+      const { data } = await removeBook({
+        variables: { bookId: bookId },
+      });
+      // upon success, remove book's id from localStorage
+      removeBookId(bookId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // if data isn't here yet, say so
   if (!userDataLength) {
@@ -91,8 +78,7 @@ const SavedBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className='btn-block btn-danger'
-                    // onClick={() => handleDeleteBook(book.bookId)}
-                  >
+                    onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
