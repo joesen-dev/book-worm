@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Jumbotron,
   Container,
@@ -7,8 +7,6 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import { getMe, deleteBook } from '../utils/API';
-import Auth from '../utils/auth';
 import { useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 
@@ -25,8 +23,6 @@ const SavedBooks = () => {
   const userDataLength = Object.keys(userData).length;
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  // TODO: (Current behavior)-User must referesh page for delete book to not render
-  // TODO: (Desired behavior)-have page automatically render without having to refresh
   const handleDeleteBook = async bookId => {
     try {
       // Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook()
@@ -38,6 +34,11 @@ const SavedBooks = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // create function to reload page when a book is deleted
+  const reloadPage = () => {
+    window.location.reload();
   };
 
   // if data isn't here yet, say so
@@ -80,7 +81,10 @@ const SavedBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className='btn-block btn-danger'
-                    onClick={() => handleDeleteBook(book.bookId)}>
+                    onClick={() => {
+                      handleDeleteBook(book.bookId);
+                      reloadPage();
+                    }}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
