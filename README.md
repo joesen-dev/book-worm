@@ -17,7 +17,7 @@ SO THAT I can keep a list of books to purchase
 
 ## Usage
 
-Here's a link to the <a href="#">Book Worm</a> deployed application
+Here's a link to the <a href="https://lit-harbor-34464.herokuapp.com/">Book Worm</a> deployed application
 
 ## Technologies
 
