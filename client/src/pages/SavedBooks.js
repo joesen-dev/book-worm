@@ -28,17 +28,13 @@ const SavedBooks = () => {
       // Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook()
       const { data } = await removeBook({
         variables: { bookId: bookId },
+      }).then(() => {
+        removeBookId(bookId);
+        window.location.reload();
       });
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
-  };
-
-  // create function to reload page when a book is deleted
-  const reloadPage = () => {
-    window.location.reload();
   };
 
   // if data isn't here yet, say so
@@ -81,10 +77,7 @@ const SavedBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className='btn-block btn-danger'
-                    onClick={() => {
-                      handleDeleteBook(book.bookId);
-                      reloadPage();
-                    }}>
+                    onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
